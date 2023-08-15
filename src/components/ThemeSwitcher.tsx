@@ -1,13 +1,41 @@
 import { useTheme } from "next-themes";
+import { HiMiniSun, HiMiniMoon } from "react-icons/hi2";
+import { Tooltip } from "@nextui-org/react";
+import { useEffect, useState } from "react";
+
 
 export const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();
-  console.log(theme, 'theme');
+  const [toolTipText, setToolTip] = useState('');
+
+  useEffect(() => {
+    getToolTipTxt();
+
+  });
+
+  const getToolTipTxt = () => {
+    if (theme === 'light') {
+      setToolTip('Change to dark');
+    } else {
+      setToolTip('Change to light');
+    }
+  }
+
+  const updateTheme = () => {
+    if (theme === 'light') {
+      setTheme('dark');
+    } else {
+      setTheme('light');
+    }
+  }
+
   return (
     <div>
-      <p>The current theme is: <span>{theme}</span></p>
-      <button onClick={() => setTheme('light')}>Light Mode</button>
-      <button onClick={() => setTheme('dark')}>Dark Mode</button>
+      <Tooltip className={theme === 'light' ? 'text-black' : 'text-white'} content={toolTipText}>
+        <button onClick={() => updateTheme()}>
+          {theme === 'light' ? <HiMiniMoon /> : <HiMiniSun />}
+        </button>
+      </Tooltip>
     </div>
   )
 };
